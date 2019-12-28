@@ -7,7 +7,7 @@ Incldues Below:
 1. Week 1
   a. Practise Excercises [ Quiz 1  -  R_BrdgWrkshp_Week1_Quiz.rmd]
   b. Practise Excercises [ Quiz 2   -  R_BrdgWrkshp_Week1_Quiz_02.rmd]
-  c. Assignment    [R_BrdgWrkshp_Week1_Assignment.Rmd]
+  c. Assignment    [R_BrdgWrkshp_Week1_Assignment.Rmd] 
 
 2. Week 2
 

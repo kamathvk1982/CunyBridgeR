@@ -1,0 +1,46 @@
+---
+title: "R_BrdgWrkshp_Week1_Quiz_02"
+author: "Vinayak Kamath"
+date: "12/21/2019"
+output: html_document
+---
+
+
+## 1. Write two functions. These functions should take a numeric vector as input, and determine the mean and the median from the values in the vector. Please do not use the built-in mean() or median() functions. You should also provide some code that initializes your numeric vector and calls your two functions!: 
+
+-> Function to do the actual calculation
+``` {r include= TRUE}
+get_mean <- function(inp_vector)
+{
+  return (sum(inp_vector) / length(inp_vector))
+}
+
+get_median <- function(inp_vector)
+{
+  med_point <- length(inp_vector)/2
+  inp_vector_sort <- sort(inp_vector, decreasing = FALSE)
+  return ( ifelse( length(inp_vector_sort) %% 2 != 0 ,  inp_vector_sort[round(med_point, digits=0)] 
+           , (inp_vector_sort[med_point] + inp_vector_sort[med_point + 1] ) /2 ))
+}
+```
+
+
+-> input values from Users and convert to numeric vector
+``` {r}
+inp.number <- readline("Enter NUmbers: ")
+inp.number <- "12, 56, 12, 45, 35, 56, 0, 12"
+inp.number.vector <- as.numeric(unlist(strsplit(inp.number, ",")))
+
+inp.number.vector
+```
+
+-> call the functions for the given vector
+``` {r}
+do.call("get_mean", args=list(inp.number.vector))
+mean(inp.number.vector)
+do.call("get_median", args=list(inp.number.vector))
+median(inp.number.vector)
+```
+
+
+

@@ -1,0 +1,81 @@
+---
+title: "R_BrdgWrkshp_Week1_Assignment"
+author: "Vinayak Kamath"
+date: "12/21/2019"
+output: html_document
+---
+
+# 1. Write a loop that calculates 12-factorial:
+
+-->  Function to calculate factorial of a number passed as arguement
+```{r include= TRUE}
+get.factorial <- function(input.num = "0", ...)
+{
+  if(is.integer(as.integer(input.num)) && input.num >= 1)
+  {
+    ret_fact<- 1
+    for (i in 1:input.num)
+      ret_fact <- ret_fact * i
+  }else
+  {
+    return ('Not a valid Number Passed !')
+  }
+  return ( ret_fact)
+}
+
+```
+
+-->  Get the factorial by passign the input value
+```{r}
+get.factorial(12)
+```
+
+
+
+# 2. Show how to create a numeric vector that contains the sequence from 20 to 50 by 5:
+
+-->  Function to return a sequence
+```{r}
+get.sequence_vector <- function(start, end, interval, ...)
+{
+  return (seq(from=start, to=end, by=  interval))
+}
+```
+
+-->  Get the numeric vector by passign the input value
+```{r}
+get.sequence_vector(start=20, end=50, interval= 5)
+```
+
+
+
+# 3. Create the function “quadratic” that takes a trio of input numbers a, b, and c and solve the quadratic equation. The function should print as output the two solutions.
+
+-->  Function to solve the quadratic equation
+```{r}
+quadratic <- function(a, b, c, ...)
+{
+  x1 <-  ( -(b) + sqrt((b ^ 2 ) - (4 * a * c))  ) / (2*a)
+  x2 <-  ( -(b) - sqrt((b ^ 2 ) - (4 * a * c))  ) / (2*a)
+  sprintf ("x is equal to %s or %s", x1, x2)
+}
+```
+
+-->  Get the input 1
+```{r}
+inp.a <- 10
+inp.b <- 12
+inp.c <- 2
+
+quadratic(a = inp.a, b = inp.b, c = inp.c)
+```
+
+
+-->  Get the input 2
+```{r}
+inp.a <- 5
+inp.b <- 6
+inp.c <- 2
+
+quadratic(a = inp.a, b = inp.b, c = inp.c)
+```

@@ -1,0 +1,163 @@
+---
+title: "R_BrdgWrkshp_Week1_Quiz"
+author: "Vinayak Kamath"
+date: "12/21/2019"
+output: html_document
+---
+
+## 1. Create a vector that contains 20 numbers: 
+
+``` {r include= TRUE}
+data.set <- c(5:13, 10:15, 3:6, 20)
+data.set
+length(data.set)
+```
+
+
+# 2. Convert the vector from  1 into a character vector:
+
+``` {r}
+character.data.set <- as.character(data.set)
+is.character(character.data.set)
+```
+
+
+# 3. Convert the vector from  1 into a vector of factors:
+
+``` {r}
+factor.data.set <- as.factor(data.set)
+is.factor(factor.data.set)
+```
+
+
+# 4. Show how many levels the vector in the previous:
+
+``` {r}
+factor.data.set
+```
+
+
+# 5. Vector that takes the vector from  1 and performs on it the formula 3x2 - 4x + 1:
+
+``` {r}
+formula.data.set <- ((3*data.set ^ 2 ) - (4*data.set) + 1)
+formula.data.set
+```
+
+
+# 6. Create a named list. That is, create a list with several elements that are each able to be referenced by name:
+
+``` {r}
+nfl.win.count.list <- c("Patriot" = 5, "Jets" = 3, "Bills" = 4, "Dolphins" = 4)
+nfl.win.count.list["Bills"]
+```
+
+
+# 7. Create a data frame with four columns – one each character, factor (with three levels), numeric, and date. Your data frame should have at least 10 observations (rows):
+
+``` {r}
+id.numeric.list <- c(1:10)
+played.date.list <- rep( as.Date("2019-12-20") , 10)
+grade.list <- c("A","B","A+", "B", "B", "A","A+","B","A","B")
+grade.factor.list <-  as.factor(grade.list)
+name.char.list <- c("Hockey", "Football", "Baseball", "Curling", "Rugby", "Lacrosse", "Basketball", "Tennis", "Cricket", "Soccer") 
+
+theDF.data.set <- data.frame (id = id.numeric.list, Name = name.char.list, Grade =grade.factor.list ,PlayedOn =played.date.list, stringsAsFactors=FALSE)
+
+theDF.data.set
+
+nrow(theDF.data.set)
+
+```
+
+
+# 8. Illustrate how to add a row with a value for the factor column that isn’t already in the list of levels. (Note: You do not need to accomplish this with a single line of code.):
+
+``` {r}
+levels(theDF.data.set$Grade) <- c(levels(theDF.data.set$Grade), "A-")
+
+theDF.data.set[nrow(theDF.data.set)+1, ]  <- list(id=11,Name="Squash", Grade ="A-", PlayedOn= as.Date("2019-12-21"))
+
+theDF.data.set
+nrow(theDF.data.set)
+```
+
+
+# 9. Show the code that would read in a CSV file called temperatures.csv from the current working directory
+
+```{r}
+getwd()
+temperature.data <-read.table(file="temperatures.csv", header=TRUE, sep=",")
+temperature.data
+```
+
+
+# 10. Use a loop to calculate the final balance, rounded to the nearest cent, in an account that earns 3.24% interest compounded monthly after six years if the original balance is $1,500 :
+
+``` {r}
+get.final.balance <- function(amt, rate, frequency, duration)
+{
+   return (round( amt * (1 + ((rate / 100)/frequency) ) ^ (frequency * duration ) , digits=2))
+}
+
+get.final.balance(amt=1500, rate=3.24, frequency= 12 , duration=6)
+
+```
+
+
+# 11. Create a numeric vector of length 20 and then write code to calculate the sum of every third element of the vector you have created: 
+```{r}
+num_vector <- c(1:20)
+i <- 1
+sum_third <- 0
+while(i <= length(num_vector))
+{
+  if ((i %% 3) == 0)
+  {
+    sum_third <- sum_third + num_vector[i]
+  }
+  i <- i + 1
+}
+num_vector
+sum_third
+```
+
+
+# 12. Use a for loop to calculate ∑ 𝑥𝑥 10 𝑖𝑖𝑖𝑖=1 for the value 𝑥𝑥 = 2.
+
+``` {r}
+final.val <- 0
+x <- 2
+for (i in 1:10) 
+  {
+    final.val <- final.val  + ( x ^ i )
+  }
+final.val
+
+```
+
+
+# 13. Use a while loop to accomplish the same task as in the previous exercise:
+
+``` {r}
+final.while.val <- 0
+x <- 2
+i <- 1
+while ( i <= 10 ) 
+  {
+    final.while.val <- final.while.val  + ( x ^ i )
+    i <- i+1
+  }
+final.while.val
+
+```
+
+
+# 14. Solve the problem from the previous two exercises without using a loop:
+```{r}
+loop.num.list <- c(1:10)
+x <- 2
+val <- 2 ^ loop.num.list
+sum(val)
+
+```

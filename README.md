@@ -17,6 +17,6 @@ Incldues Below:
   a. Assignment    [R_BrdgWrkshp_Week3_Assignment.Rmd] 
   
 Data Set Files used:
-1. temperatures.csv
-2. AppleStock.csv
-3. Forbes2000.csv 
+  1. temperatures.csv
+  2. AppleStock.csv
+  3. Forbes2000.csv 

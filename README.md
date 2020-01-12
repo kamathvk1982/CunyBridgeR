@@ -10,5 +10,9 @@ Incldues Below:
   c. Assignment    [R_BrdgWrkshp_Week1_Assignment.Rmd] 
 
 2. Week 2
+  a. Practise Excercises [ Hands On   -  R_BrdgWrkshp_Week2_HandsOn.rmd]
+  b. Assignment    [R_BrdgWrkshp_Week2_Assignment.Rmd] 
 
 3. Week 3
+  a. Assignment    [R_BrdgWrkshp_Week3_Assignment.Rmd] 
+  

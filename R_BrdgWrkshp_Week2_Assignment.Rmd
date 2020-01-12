@@ -1,0 +1,104 @@
+---
+title: "R_BrdgWrkshp_Week2_Assignment"
+author: "Vinayak Kamath"
+date: "12/29/2019"
+output: html_document
+---
+
+Data sets: http://vincentarelbundock.github.io/Rdatasets/ (click on the csv index for a list): datasets.csv
+
+"Stat2Data","AppleStock","Daily Price and Volume of Apple Stock",66,4,0,0,1,0,3,
+"https://raw.github.com/vincentarelbundock/Rdatasets/master/csv/Stat2Data/AppleStock.csv",
+"https://raw.github.com/vincentarelbundock/Rdatasets/master/doc/Stat2Data/AppleStock.html"
+
+
+### 1. Use the summary function to gain an overview of the data set. Then display the mean and median for at least two attributes:
+
+```{r}
+library(readr) 
+apple.data <-read_delim(file="AppleStock.csv",  delim=',') 
+apple.data 
+
+summary(apple.data)
+```
+-> Mean and Median of Attribute Price:
+```{r}
+round(mean(apple.data$Price), digits=2)
+round(median(apple.data$Price), digits=2)
+```
+-> Mean and Median of Attribute Volume: 
+```{r}
+round(mean(apple.data$Volume), digits=2)
+round(median(apple.data$Volume), digits=2)
+```
+
+
+### 2. Create a new data frame with a subset of the columns and rows. Make sure to rename it:
+
+-> Creating asubset having only August 2016 Data in it ; and selected columns:
+```{r}
+apple.data.august2016 <- subset(apple.data, grepl("^8", apple.data$Date) & grepl("2016$", apple.data$Date)  , select = c("X1","Date","Price","Change"), drop = FALSE )
+
+apple.data.august2016
+```
+
+
+### 3. Create new column names for the new data frame:
+-> Renaming the column names
+```{r}
+names(apple.data.august2016) <- c("X1"= "Id", "Date" ="MarketDate","Price" = "StockPrice", "Change" ="PriceChange")
+apple.data.august2016
+```
+
+
+### 4. Use the summary function to create an overview of your new data frame. The print the mean and median for the same two attributes. Please compare:
+-> USe of summary on the new data set: 
+```{r}
+summary(apple.data.august2016)
+
+round(mean(apple.data.august2016$StockPrice), digits=2)
+round(median(apple.data.august2016$StockPrice), digits=2)
+
+round(mean(apple.data.august2016$PriceChange), digits=2)
+round(median(apple.data.august2016$PriceChange), digits=2)
+```
+
+
+### 5. For at least 3 values in a column please rename so that every value in that column is renamed. For example, suppose I have 20 values of the letter “e” in one column. Rename those values so that all 20 would show as “excellent”:
+
+-> Adding a new Column having character values:
+```{r}
+apple.data.august2016$ChangeIndicator = ifelse(apple.data.august2016$PriceChange > 0 , "I",(ifelse(apple.data.august2016$PriceChange <0, "D", "S" )) )
+
+apple.data.august2016
+```
+-> Column Value Renaming:
+```{r}
+apple.data.august2016$ChangeIndicator <- gsub("I","Increase", apple.data.august2016$ChangeIndicator)
+apple.data.august2016$ChangeIndicator <- gsub("D","Decrease", apple.data.august2016$ChangeIndicator)
+apple.data.august2016$ChangeIndicator <- gsub("S","Same", apple.data.august2016$ChangeIndicator)
+
+apple.data.august2016
+```
+
+
+### 6. Display enough rows to see examples of all of steps 1-5 above:
+-> Data:
+```{r}
+as.data.frame(apple.data)
+as.data.frame(apple.data.august2016)
+```
+
+
+### 7. BONUS – place the original .csv in a github file and have R read from the link. This will be a very useful skill as you progress in your data science education and career:
+-> Access csv fiel via github:
+```{r}
+theURL <-  "https://raw.githubusercontent.com/kamathvk1982/CunyBridgeR/master/AppleStock.csv"
+git.apple.data <-read_delim(file=theURL,  delim=',') 
+git.apple.data 
+
+summary(git.apple.data)
+
+```
+
+

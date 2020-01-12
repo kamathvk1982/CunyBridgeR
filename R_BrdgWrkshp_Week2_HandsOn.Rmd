@@ -1,0 +1,53 @@
+---
+title: "R_BrdgWrkshp_Week2_HandsOn"
+author: "Vinayak Kamath"
+date: "1/5/2020"
+output: html_document
+---
+
+1. Load the diamonds dataset, which is included with the ggplot2 package.  Identify which variables in the diamond set are numeric, and which are catgorical (factors).
+``` {r}
+library(ggplot2)
+str(diamonds)
+```
+
+
+2. Generate summary level descriptive statistics:  Show the mean, median, 25th and 75th quartiles, min, and max for each of the applicable variables in diamonds.
+``` {r}
+summary(diamonds)
+
+summary(diamonds$carat)
+quantile(diamonds$carat)
+```
+
+
+3. Determine the frequency for each of the diamond colors.
+```{r}
+table(diamonds$color )
+with (diamonds, table(color))
+```
+
+
+4. Determine the frequency for each of the diamond cuts, by color
+```{r}
+table(diamonds$cut, diamonds$color  )
+with (diamonds, table(cut, color))
+```
+
+5. Create a graph for a single numeric variable.
+```{r}
+hist(diamonds$carat , main = 'Diamonds Carat Data' )
+boxplot(diamonds$carat , main = 'Diamonds Carat Data')
+table(diamonds$cut )
+pie(table(diamonds$cut ))
+```
+
+
+6. Create a scatterplot of two numeric variables. 
+```{r}
+scatter.smooth(x=diamonds$carat, y=diamonds$price)
+plot(diamonds$price ~ diamonds$carat)
+qplot(carat, price, data=diamonds)
+ggplot(diamonds,  aes(x=carat, y=price) ) +  geom_point()
+```
+

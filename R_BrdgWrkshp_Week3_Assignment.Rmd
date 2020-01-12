@@ -1,0 +1,112 @@
+---
+title: "R_BrdgWrkshp_Week3_Assignment"
+author: "Vinayak Kamath"
+date: "1/11/2020"
+output: html_document
+---
+
+### *** Data set  "Forbes2000.csv"  from http://vincentarelbundock.github.io/Rdatasets/  ***
+
+```{r}
+#library(readr) 
+Forbes2000.data <-read.delim(file="Forbes2000.csv",  sep=',') 
+str(Forbes2000.data)
+```
+
+
+### 1. Data Exploration: This should include summary statistics, means, medians, quartiles, or any other relevant information about the data set. Please include some conclusions in the R Markdown text.
+```{r}
+summary(Forbes2000.data)
+```
+-> Conclusion: USA as a country tops  wth around 751 companies in  Forbes 2000 list. Banking , Diversified Financials and Insurance as categories tops with approx 600 companies in Forbes 2000 list. 
+
+
+### 2. Data wrangling: Please perform some basic transformations. They will need to make sense but could include column renaming, creating a subset of the data, replacing values, or creating new columns with derived data (for example – if it makes sense you could sum two columns together):
+```{r}
+# Data Sub set to analyze Compaines in Forbes 2000 based in Country Mexico:
+Forbes2000.Mexico.data <- subset(Forbes2000.data, grepl("Mexico", Forbes2000.data$country) , select = c("rank","name","category","marketvalue", "profits"), drop = FALSE )
+summary(Forbes2000.Mexico.data)
+
+# Renaming Columns:
+names(Forbes2000.Mexico.data) <- c("rank" = "Rank","name"="CompanyName","category"="Category","marketvalue"="MarketValue","profits"="ProfitsInTrillions")
+
+# Adding New Column to indicate as factor the year on year (YoY) Trend in profits:
+Forbes2000.Mexico.data$ProfitsYoY = factor(ifelse(Forbes2000.Mexico.data$ProfitsInTrillions > 0 , "Up",(ifelse(Forbes2000.Mexico.data$ProfitsInTrillions <0, "Down", "Same" )) ) , levels = c("Up","Down","Same"))
+
+summary(Forbes2000.Mexico.data)
+
+# Showing Sub Set of companies with downward YoY profit trend:
+subset(Forbes2000.Mexico.data, grepl("Down", Forbes2000.Mexico.data$ProfitsYoY) , select = c("Rank","CompanyName","Category","MarketValue", "ProfitsInTrillions"), drop = FALSE )
+```
+-> Conclusion: Minimum Rank for Mexico is 375 and Food, Drink and Tibacco Category dominates as the top category in Mexico. 
+
+
+### 3. Graphics: Please make sure to display at least one scatter plot, box plot and histogram. Don’t be limited to this. Please explore the many other options in R packages such as ggplot2:
+
+```{r}
+# Boxplot and ggplot for Rank for All company in Mexico country
+library(ggplot2)
+boxplot(Forbes2000.Mexico.data$Rank , main = 'Forbes2000 Mexico Rank Data')
+ggplot(Forbes2000.Mexico.data,  aes(y=CompanyName, x=Rank) ) +  geom_point()
+
+# Pie Chart for MarketValue for Mexico Country: 
+pie(Forbes2000.Mexico.data$MarketValue, paste(Forbes2000.Mexico.data$CompanyName, " - " ,Forbes2000.Mexico.data$MarketValue, " T." , sep="" ), main = "Market Value Pie Chart for Mexico", radius=1, col = rainbow(length(Forbes2000.Mexico.data$MarketValue)))
+
+# 3D Pie Chart for Profits Year on Year for Mexico Country:
+library(plotrix)
+data <- summary(Forbes2000.Mexico.data$ProfitsYoY)
+owner <- levels(Forbes2000.Mexico.data$ProfitsYoY)
+pie3D(data,labels= paste(owner,data, sep=' - '), explode=0.03, start=pi/2,main="ProfitsYoY Pie Chart for Mexico", col=c("brown","#ddaa00","#dd00dd"))
+
+# Bar Graph for marketvalue total at Country grouping:
+library(dplyr) 
+Forbes2000.data %>% group_by(country) %>%  summarise(sum.marketvalue = sum(marketvalue))  %>%  
+  ggplot(aes(x = country, y = sum.marketvalue)) +
+    geom_bar(stat = "identity") +
+    
+    theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
+    labs(
+        x = "Country",
+        y = "Market Value",
+        title = paste(
+            "Country wise Market holding"
+        )
+    )
+
+# Showing the countries in Forbes 2000 in world map:
+library(maptools)
+data(wrld_simpl)
+myCountries = wrld_simpl@data$NAME %in% names(table(Forbes2000.data$country))
+plot(wrld_simpl, col = c(gray(.80), "blue")[myCountries+1])
+```
+
+### 4. Meaningful question for analysis: Please state at the beginning a meaningful question for analysis. Use the first three steps and anything else that would be helpful to answer the question you are posing from the data set you chose. Please write a brief conclusion paragraph in R markdown at the end:
+```{r}
+# Question: How does USA tally with rest of the World in terms of the market value and assets and positioing:
+Forbes2000.data$country <- factor(Forbes2000.data$country)
+Usa.data <- filter(Forbes2000.data, country == "United States" ) 
+Rest.data <- filter(Forbes2000.data, country != "United States"  ) 
+x <- matrix( , nrow = 3, ncol = 4 , dimnames = list(c("Count","Asset","Market Value"), c("USA","Rest", "USA %", "Rest %")))
+
+x["Count", c("USA","Rest")] <- c( nrow(Usa.data), nrow(Rest.data))
+x["Asset", c("USA","Rest")] <- c( sum(Usa.data$asset) ,  sum(Rest.data$asset))
+x["Market Value", c("USA","Rest")] <-  c( sum(Usa.data$marketvalue), sum(Rest.data$marketvalue))
+
+x["Count", c("USA %","Rest %")] <- c( ((x["Count","USA"] / (x["Count","USA"] + x["Count","Rest"] )) *100 ), ((x["Count","Rest"] / (x["Count","USA"] + x["Count","Rest"] )) *100 )  )
+x["Asset", c("USA %","Rest %")] <- c( ((x["Asset","USA"] / (x["Asset","USA"] + x["Asset","Rest"] )) *100 ), ((x["Asset","Rest"] / (x["Asset","USA"] + x["Asset","Rest"] )) *100 )  )
+x["Market Value", c("USA %","Rest %")] <-  c( ((x["Market Value","USA"] / (x["Market Value","USA"] + x["Market Value","Rest"] )) *100 ), ((x["Market Value","Rest"] / (x["Market Value","USA"] + x["Market Value","Rest"] )) *100 )  )
+
+analysis.data <- x
+analysis.data
+
+```
+
+
+### 5. BONUS – place the original .csv in a github file and have R read from the link. This will be a very useful skill as you progress in your data science education and career:
+
+```{r}
+# Access csv file via github:
+csvFile.URL <-  "https://raw.githubusercontent.com/kamathvk1982/CunyBridgeR/master/Forbes2000.csv"
+git.Forbes2000.data <-read.delim(file=csvFile.URL,  sep=',')
+summary(git.Forbes2000.data)
+```
